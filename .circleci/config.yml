@@ -12,7 +12,6 @@ jobs:
     steps:
       - checkout
       - run: sudo apt install -y libsqlite3-dev zlib1g-dev
-      - run: sudo docker-php-ext-install zip
       - run: sudo composer self-update
 
       # composer
@@ -26,7 +25,6 @@ jobs:
           paths:
             - vendor
 
-      - run: touch storage/testing.sqlite
       - run: php artisan migrate --env=testing --force
       - run: ./vendor/bin/codecept build
       - run: ./vendor/bin/codecept run
