@@ -11,7 +11,6 @@ jobs:
     working_directory: ~/laravel
     steps:
       - checkout
-      - run: sudo apt install -y libsqlite3-dev zlib1g-dev
       - run: sudo docker-php-ext-install zip
       - run: sudo docker-php-ext-install pdo_mysql
       - run: sudo composer self-update
@@ -27,6 +26,18 @@ jobs:
           paths:
             - vendor
 
+  test:
+    steps:
       - run: php artisan migrate --env=testing --force
       - run: ./vendor/bin/codecept build
       - run: ./vendor/bin/codecept run
+
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
